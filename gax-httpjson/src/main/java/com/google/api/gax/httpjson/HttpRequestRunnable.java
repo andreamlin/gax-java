@@ -34,7 +34,6 @@ import com.google.api.client.http.HttpMediaType;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.json.JsonHttpContent;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonObjectParser;
@@ -57,7 +56,7 @@ class HttpRequestRunnable<RequestT, ResponseT> implements Runnable {
   private final HttpJsonCallOptions callOptions;
   private final RequestT request;
   private final ApiMethodDescriptor<RequestT, ResponseT> methodDescriptor;
-  private final HttpTransport httpTransport;
+  private final HttpTransportWrapper httpTransport;
   private final String endpoint;
   private final JsonFactory jsonFactory;
   private final ImmutableList<HttpJsonHeaderEnhancer> headerEnhancers;
@@ -67,7 +66,7 @@ class HttpRequestRunnable<RequestT, ResponseT> implements Runnable {
       final HttpJsonCallOptions callOptions,
       final RequestT request,
       final ApiMethodDescriptor<RequestT, ResponseT> methodDescriptor,
-      final HttpTransport httpTransport,
+      final HttpTransportWrapper httpTransport,
       String endpoint,
       JsonFactory jsonFactory,
       List<HttpJsonHeaderEnhancer> headerEnhancers,
@@ -151,7 +150,7 @@ class HttpRequestRunnable<RequestT, ResponseT> implements Runnable {
     private HttpJsonCallOptions callOptions;
     private RequestT request;
     private ApiMethodDescriptor<RequestT, ResponseT> methodDescriptor;
-    private HttpTransport httpTransport;
+    private HttpTransportWrapper httpTransport;
     private String endpoint;
     private JsonFactory jsonFactory;
     private List<HttpJsonHeaderEnhancer> headerEnhancers;
@@ -175,7 +174,7 @@ class HttpRequestRunnable<RequestT, ResponseT> implements Runnable {
       return this;
     }
 
-    Builder<RequestT, ResponseT> setHttpTransport(HttpTransport httpTransport) {
+    Builder<RequestT, ResponseT> setHttpTransportWrapper(HttpTransportWrapper httpTransport) {
       this.httpTransport = httpTransport;
       return this;
     }

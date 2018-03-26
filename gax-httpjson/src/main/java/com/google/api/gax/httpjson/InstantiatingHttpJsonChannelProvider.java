@@ -29,7 +29,6 @@
  */
 package com.google.api.gax.httpjson;
 
-import com.google.api.client.http.HttpTransport;
 import com.google.api.core.BetaApi;
 import com.google.api.core.InternalExtensionOnly;
 import com.google.api.gax.core.ExecutorProvider;
@@ -62,7 +61,7 @@ public final class InstantiatingHttpJsonChannelProvider implements TransportChan
   private final ExecutorProvider executorProvider;
   private final HeaderProvider headerProvider;
   private final String endpoint;
-  private final HttpTransport httpTransport;
+  private final HttpTransportWrapper httpTransport;
 
   private InstantiatingHttpJsonChannelProvider(
       ExecutorProvider executorProvider, HeaderProvider headerProvider, String endpoint) {
@@ -76,7 +75,7 @@ public final class InstantiatingHttpJsonChannelProvider implements TransportChan
       ExecutorProvider executorProvider,
       HeaderProvider headerProvider,
       String endpoint,
-      HttpTransport httpTransport) {
+      HttpTransportWrapper httpTransport) {
     this.executorProvider = executorProvider;
     this.headerProvider = headerProvider;
     this.endpoint = endpoint;
@@ -143,7 +142,7 @@ public final class InstantiatingHttpJsonChannelProvider implements TransportChan
             .setEndpoint(endpoint)
             .setHeaderEnhancers(headerEnhancers)
             .setExecutor(executor)
-            .setHttpTransport(httpTransport)
+            .setHttpTransportWrapper(httpTransport)
             .build();
 
     return HttpJsonTransportChannel.newBuilder().setManagedChannel(channel).build();
@@ -171,7 +170,7 @@ public final class InstantiatingHttpJsonChannelProvider implements TransportChan
     private ExecutorProvider executorProvider;
     private HeaderProvider headerProvider;
     private String endpoint;
-    private HttpTransport httpTransport;
+    private HttpTransportWrapper httpTransport;
 
     private Builder() {}
 
@@ -214,7 +213,7 @@ public final class InstantiatingHttpJsonChannelProvider implements TransportChan
     }
 
     /** Sets the HTTP transport to be used. */
-    public Builder setHttpTransport(HttpTransport httpTransport) {
+    public Builder setHttpTransportWrapper(HttpTransportWrapper httpTransport) {
       this.httpTransport = httpTransport;
       return this;
     }

@@ -29,6 +29,7 @@
  */
 package com.google.api.gax.httpjson.testing;
 
+import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.LowLevelHttpRequest;
 import com.google.api.client.http.LowLevelHttpResponse;
 import com.google.api.client.testing.http.MockHttpTransport;
@@ -53,6 +54,7 @@ public final class MockHttpService extends MockHttpTransport {
 
   private final Multimap<String, String> requestHeaders = LinkedListMultimap.create();
   private final List<String> requestPaths = new LinkedList<>();
+  private final List<Object> requestObjects = new LinkedList<>();
   private final Queue<HttpResponseFactory> responseHandlers = new LinkedList<>();
   private List<ApiMethodDescriptor> serviceMethodDescriptors;
   private String endpoint;
@@ -150,6 +152,10 @@ public final class MockHttpService extends MockHttpTransport {
   /** Get the FIFO list of URL paths to which requests were sent. */
   public List<String> getRequestPaths() {
     return requestPaths;
+  }
+
+  public List<Object> getRequestObjects() {
+    return requestObjects;
   }
 
   /** Get the FIFO list of request headers sent. */

@@ -55,7 +55,7 @@ public class ManagedHttpJsonChannel implements HttpJsonChannel, BackgroundResour
   private final String endpoint;
   private final JsonFactory jsonFactory;
   private final ImmutableList<HttpJsonHeaderEnhancer> headerEnhancers;
-  private final HttpTransport httpTransport;
+  private final HttpTransportWrapper httpTransport;
 
   private boolean isTransportShutdown;
 
@@ -64,12 +64,13 @@ public class ManagedHttpJsonChannel implements HttpJsonChannel, BackgroundResour
       String endpoint,
       JsonFactory jsonFactory,
       List<HttpJsonHeaderEnhancer> headerEnhancers,
-      @Nullable HttpTransport httpTransport) {
+      HttpTransportWrapper httpTransport) {
     this.executor = executor;
     this.endpoint = endpoint;
     this.jsonFactory = jsonFactory;
     this.headerEnhancers = ImmutableList.copyOf(headerEnhancers);
-    this.httpTransport = httpTransport == null ? new NetHttpTransport() : httpTransport;
+    this.httpTransport = httpTransport;
+    // HttpTransport httpTransportImpl = == null ? new NetHttpTransport() : httpTransport;
   }
 
   @Override
@@ -85,7 +86,7 @@ public class ManagedHttpJsonChannel implements HttpJsonChannel, BackgroundResour
             .setApiMethodDescriptor(methodDescriptor)
             .setHeaderEnhancers(headerEnhancers)
             .setHttpJsonCallOptions(callOptions)
-            .setHttpTransport(httpTransport)
+            .setHttpTransportWrapper(httpTransport)
             .setJsonFactory(jsonFactory)
             .setRequest(request)
             .setEndpoint(endpoint)
@@ -142,7 +143,7 @@ public class ManagedHttpJsonChannel implements HttpJsonChannel, BackgroundResour
     private String endpoint;
     private JsonFactory jsonFactory = JSON_FACTORY;
     private List<HttpJsonHeaderEnhancer> headerEnhancers;
-    private HttpTransport httpTransport;
+    private HttpTransportWrapper httpTransport;
 
     private Builder() {}
 
@@ -161,7 +162,7 @@ public class ManagedHttpJsonChannel implements HttpJsonChannel, BackgroundResour
       return this;
     }
 
-    public Builder setHttpTransport(HttpTransport httpTransport) {
+    public Builder setHttpTransportWrapper(HttpTransportWrapper httpTransport) {
       this.httpTransport = httpTransport;
       return this;
     }
