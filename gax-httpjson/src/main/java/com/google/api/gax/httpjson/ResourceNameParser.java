@@ -39,11 +39,11 @@ import javax.annotation.Nullable;
 
 /* A helper to parse ResourceNames from URLs. */
 @BetaApi
-public class ResourceNameParser<T extends ResourceNameFactory> {
+public class ResourceNameParser<T extends ResourceNameFactory, R> {
   // A splitter on slash.
   private static final char DELIMITER = '/';
 
-  public String parseFromUrl(T resourceNameType, String url) {
+  public R parseFromUrl(T resourceNameType, String url, String serviceAddress) {
     String substring = url;
     int delimiterIndex = 0;
     ValidationException firstValidationException;
@@ -52,11 +52,11 @@ public class ResourceNameParser<T extends ResourceNameFactory> {
     } catch (ValidationException e) {
       firstValidationException = e;
     }
-    while (delimiterIndex < url.length()) {
-      try {
-        resourceNameType.parse()
-      }
+    if (url.startsWith(serviceAddress)) {
+      String resourcePath = url.substring(serviceAddress.length());
+      return resourceNameType.parse(resourcePath);
     }
+
     throw firstValidationException;
   }
 }
